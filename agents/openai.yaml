@@ -1,0 +1,4 @@
+interface:
+  display_name: Model Flight Test
+  short_description: Run evidence-based model qualification
+  default_prompt: Run a deterministic flight test against the explicitly named model or endpoint.

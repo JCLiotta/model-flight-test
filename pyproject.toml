@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "model-flight-test"
+version = "0.1.0"
+description = "Deterministic qualification suite for model serving and agent workloads"
+requires-python = ">=3.9"
+
+[tool.setuptools.packages.find]
+include = ["model_flight_test*"]

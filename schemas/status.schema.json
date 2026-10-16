@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Model Flight Test Status",
+  "type": "object",
+  "required": ["state", "phase", "updated_at"],
+  "properties": {
+    "state": {"enum": ["starting", "running", "done", "error"]},
+    "phase": {"type": "string"},
+    "updated_at": {"type": "string"},
+    "completed": {"type": "object"},
+    "targets": {"type": "object"},
+    "current_action": {"type": "string"},
+    "blocker": {"type": ["string", "null"]}
+  }
+}
