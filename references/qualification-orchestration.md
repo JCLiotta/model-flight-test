@@ -22,6 +22,19 @@ Every lane must isolate exceptions and convert invalid tool arguments or
 sandbox errors into structured tool results. A lane exception must not crash
 aggregation or erase completed lane evidence.
 
+Before every accumulating chat request, render and count the exact chat
+template plus tool schemas. Reserve output tokens and a safety margin with
+`ContextBudget`, then call `compact_messages` to remove only complete oldest
+turn groups; never split an assistant tool call from its tool result. The
+caller supplies a deterministic state checkpoint when dropped turns contain
+state needed by the lane. If the newest indivisible group cannot fit, stop the
+lane as `harness-invalid` instead of sending the request.
+
+On a context-limit HTTP 400, classify it with `classify_request_error`, compact
+and retry at most once, and never append an empty assistant message for the
+rejected request. A repeated budget rejection stops the lane. Canary
+denominators include only HTTP-200 responses that produced an answer.
+
 ## Attribution and recovery
 
 Keep these distinct:

@@ -13,6 +13,8 @@ credentials.
 - Dependency-free validators for exact format, uncertainty, code, and recovery.
 - JSON Schemas for individual results and atomic progress status.
 - Provider adapter contract and a standard-library OpenAI-compatible client.
+- Pre-request context budgeting that compacts complete turn/tool groups and
+  attributes context-limit rejections to the harness rather than the server.
 - Unit tests and private-data exclusion guidance.
 
 ## Repository layout
@@ -24,6 +26,7 @@ model-flight-test/
 ├── LICENSE
 ├── pyproject.toml
 ├── model_flight_test/
+│   ├── context_budget.py
 │   └── validators.py
 ├── scripts/
 │   └── validate_records.py
@@ -51,6 +54,11 @@ python3 scripts/validate_records.py records.json
 `validate_records.py` grades captured responses locally. It never calls a
 model, uses another model as a judge, or treats self-reported success as
 evidence.
+
+Accumulating qualification runners should use `ContextBudget` and
+`compact_messages` before every request. Token counting must include the
+rendered chat template and tool schemas; a context-limit HTTP 400 is
+`harness-invalid`, not a serving failure.
 
 ## Qualification rules
 
